@@ -1,58 +1,292 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليلة عيد ميلاد صاخبة</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudySync Assist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <style>
+    :root {
+      --md-sys-color-primary: #0b57d0;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-primary-container: #d3e3fd;
+      --md-sys-color-on-primary-container: #041e49;
+      --md-sys-color-surface: #f8fafd;
+      --md-sys-color-surface-container: #ffffff;
+      --md-sys-color-surface-container-high: #e9eef6;
+      --md-sys-color-outline: #c4c7c5;
+      --md-sys-color-outline-variant: #e1e3e1;
+      --md-sys-color-on-surface: #1f1f1f;
+      --md-sys-color-on-surface-variant: #444746;
+      --md-sys-color-error: #ba1a1a;
+      --md-sys-color-success: #146c2e;
+      --md-sys-color-success-container: #c4eed0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Google Sans', sans-serif; }
+    body { background-color: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); line-height: 1.5; padding-bottom: 64px; }
+
+    header {
+      background: var(--md-sys-color-surface-container);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);
+      display: grid; place-items: center;
+    }
+    .brand-title { font-size: 18px; font-weight: 600; color: var(--md-sys-color-on-surface-container); }
+    .version-pill {
+      background: var(--md-sys-color-success-container); color: var(--md-sys-color-success);
+      padding: 2px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    }
+
+    .nav-links { display: flex; gap: 16px; align-items: center; }
+    .btn-m3 {
+      background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary);
+      border: 0; border-radius: 20px; padding: 10px 24px; font-size: 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .btn-m3:hover { box-shadow: 0 4px 12px rgba(11,87,208,0.3); }
+    .btn-m3.secondary {
+      background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface);
+    }
+
+    .hero {
+      max-width: 900px; margin: 64px auto 32px; padding: 0 24px; text-align: center;
+    }
+    .hero h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; color: #041e49; }
+    .hero p { font-size: 18px; color: var(--md-sys-color-on-surface-variant); max-width: 700px; margin: 0 auto 32px; }
+
+    .hero-shortcuts {
+      display: inline-flex; gap: 16px; background: var(--md-sys-color-surface-container-high);
+      padding: 12px 24px; border-radius: 16px; font-size: 13px; font-weight: 500;
+      border: 1px solid var(--md-sys-color-outline-variant); margin-bottom: 40px;
+    }
+    .hero-shortcuts kbd {
+      background: #fff; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--md-sys-color-outline); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    
+    .section-title { font-size: 24px; font-weight: 700; margin: 48px 0 24px; color: #041e49; }
+
+    .grid-features {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+    }
+    .card {
+      background: var(--md-sys-color-surface-container); border-radius: 24px;
+      padding: 28px; border: 1px solid var(--md-sys-color-outline-variant);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.06); }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 16px; background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-primary); display: grid; place-items: center; margin-bottom: 16px;
+    }
+    .card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--md-sys-color-on-surface); }
+    .card p { font-size: 14px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6; }
+
+    .changelog-list { display: flex; flex-direction: column; gap: 16px; }
+    .changelog-item {
+      background: var(--md-sys-color-surface-container); border-radius: 16px; padding: 24px;
+      border: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .changelog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .changelog-version { font-weight: 700; font-size: 16px; color: var(--md-sys-color-primary); }
+    .changelog-date { font-size: 12px; color: var(--md-sys-color-on-surface-variant); }
+    .changelog-item ul { margin-left: 20px; color: var(--md-sys-color-on-surface-variant); font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: var(--md-sys-color-surface-container); border-radius: 16px; padding: 20px;
+      border: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .faq-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--md-sys-color-on-surface); }
+    .faq-item p { font-size: 13.5px; color: var(--md-sys-color-on-surface-variant); }
+
+    .code-box {
+      background: #1f1f1f; color: #f2f2f2; border-radius: 20px; padding: 24px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; overflow-x: auto;
+      border: 1px solid #333; margin-top: 24px; position: relative;
+    }
+    .copy-btn {
+      position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.1); color: #fff;
+      border: 0; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+    footer {
+      text-align: center; margin-top: 80px; color: var(--md-sys-color-on-surface-variant); font-size: 13px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+  </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="grid-floor"></div>
 
-    <div class="hero-section">
-        <div class="neon-wrapper">
-            <h1 class="neon-text" data-text="عيد ميلاد سعيد">عيد ميلاد سعيد</h1>
-            <div class="glitch-box">
-                <span class="sub-text">استمتع بليلتك الخاصة</span>
-            </div>
-        </div>
-        
-        <div class="party-controls">
-            <button class="neon-button" onclick="launchParty()">إطلاق الاحتفال 🔥</button>
-        </div>
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <span class="material-symbols-outlined">auto_stories</span>
+      </div>
+      <div class="brand-title">StudySync Assist</div>
+      <span class="version-pill">v4.8</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="btn-m3 secondary">Features</a>
+      <a href="#changelog" class="btn-m3 secondary">Changelog</a>
+      <a href="https://github.com/studlo666/edgenuity" target="_blank" class="btn-m3 secondary">GitHub Repo</a>
+      <a href="#install" class="btn-m3">Install Script</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>StudySync Assist</h1>
+    <p>A Material You userscript designed for automated course navigation, AI vision form filling, math matching solvers, and dashboard customization[cite: 1].</p>
+    
+    <div class="hero-shortcuts">
+      <span>Toggle UI: <kbd>Shift + /</kbd></span>
+      <span>Panic Destroy: <kbd>Shift + \</kbd></span>
     </div>
 
-    <script>
-        function launchParty() {
-            const end = Date.now() + (5 * 1000);
-            const colors = ['#00f2ff', '#7000ff', '#ff00d9'];
+    <div>
+      <a href="https://github.com/studlo666/edgenuity" target="_blank" class="btn-m3" style="font-size: 15px; padding: 12px 28px;">View Source on GitHub</a>
+    </div>
+  </section>
 
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
+  <div class="container" id="features">
+    <h2 class="section-title">Core Architecture & Capabilities</h2>
+    <div class="grid-features">
+      
+      <div class="card">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">psychology</span>
+        </div>
+        <h3>Gemini AI Vision & Form Solver</h3>
+        <p>Integrates Gemini 2.5 Flash with multi-key rotation to inspect questions, formulas, and diagrams, automatically populating and verifying answers[cite: 1].</p>
+      </div>
 
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-        }
-    </script>
+      <div class="card">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">monitoring</span>
+        </div>
+        <h3>Dashboard Customizer</h3>
+        <p>Customizes student course cards[cite: 1]. Switch statuses between Ahead and On Target, configure target grade ranges, and filter out overdue alerts[cite: 1].</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">bolt</span>
+        </div>
+        <h3>Smart Progression</h3>
+        <p>Automatically advances through completed slides, cleans up overlay dialogues, handles vocabulary matching tasks, and maintains connection heartbeats[cite: 1].</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">shield</span>
+        </div>
+        <h3>Panic Kill Switch</h3>
+        <p>An instant self-destruct mechanism across all frames (`Shift + \`) that completely purges injected elements and restores native platform behavior[cite: 1].</p>
+      </div>
+
+    </div>
+
+    <h2 class="section-title" id="changelog">Changelog & Version History</h2>
+    <div class="changelog-list">
+      <div class="changelog-item">
+        <div class="changelog-header">
+          <span class="changelog-version">Version 4.8</span>
+          <span class="changelog-date">Latest Release</span>
+        </div>
+        <ul>
+          <li>Added support for comma-separated multi-key slots with automatic API quota rotation[cite: 1].</li>
+          <li>Refined line connector and matching pair simulation algorithms[cite: 1].</li>
+          <li>Enhanced Material You shadow DOM controller positioning and state persistence[cite: 1].</li>
+        </ul>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-header">
+          <span class="changelog-version">Version 4.5</span>
+        </div>
+        <ul>
+          <li>Introduced student dashboard grade and progress spoofer with customizable ranges[cite: 1].</li>
+          <li>Added filters for overdue alert panels and warning banners[cite: 1].</li>
+        </ul>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-header">
+          <span class="changelog-version">Version 4.0</span>
+        </div>
+        <ul>
+          <li>Integrated Gemini Vision for diagram and math formula image processing[cite: 1].</li>
+          <li>Implemented cross-frame messaging and the global `Shift + \` panic destroy mechanism[cite: 1].</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title" id="faq">FAQ & Troubleshooting</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h4>How do I prevent API rate limits (HTTP 429)?</h4>
+        <p>You can paste multiple free Gemini API keys separated by commas into the configuration settings tab. The script will automatically rotate keys when quota limits are reached[cite: 1].</p>
+      </div>
+      <div class="faq-item">
+        <h4>What does the Panic Kill Switch do?</h4>
+        <p>Pressing <kbd>Shift + \</kbd> instantly terminates all active polling loops, removes injection elements, stops dashboard spoofing, and restores the original environment across all parent and child frames[cite: 1].</p>
+      </div>
+      <div class="faq-item">
+        <h4>How do I show or hide the Material You controller?</h4>
+        <p>Use the keyboard shortcut <kbd>Shift + /</kbd> to toggle the visibility of the primary controller container at any time[cite: 1].</p>
+      </div>
+    </div>
+
+    <h2 class="section-title" id="install">Installation Guide</h2>
+    <div class="card">
+      <h3 style="margin-bottom: 12px;">Setup Steps</h3>
+      <ol style="margin-left: 20px; color: var(--md-sys-color-on-surface-variant); display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+        <li>Install the <strong>Tampermonkey</strong> extension in your browser.</li>
+        <li>Create a new userscript and paste the script code below[cite: 1].</li>
+        <li>Open your course portal and press <kbd>Shift + /</kbd> to bring up the Material You controller interface[cite: 1].</li>
+      </ol>
+
+      <div class="code-box">
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('script-code').innerText); alert('Script code copied!');">Copy Script</button>
+        <pre id="script-code">// ==UserScript==
+// @name         StudySync Assist - Course Navigation & Form Helper
+// @namespace    https://github.com/studlo666/edgenuity
+// @version      4.8
+// @description  Streamlined academic utility interface for automated navigation, quiz solving, and dashboard customization.
+// @match        *://*.core.learn.edgenuity.com/*
+// @match        *://student.edgenuity.com/*
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_xmlhttpRequest
+// ==/UserScript==
+// (Paste your StudySync.js script body here)
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>StudySync Systems &bull; Built with Material Design 3</p>
+    <p style="font-size: 12px; opacity: 0.8;">love from america</p>
+  </footer>
+
 </body>
 </html>
